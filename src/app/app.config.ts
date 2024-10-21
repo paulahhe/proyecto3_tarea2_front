@@ -1,3 +1,5 @@
+//CONFIGURACION DE ASPECTOS GENERALES DE LA APP
+
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
@@ -17,7 +19,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         baseUrlInterceptor,
         accessTokenInterceptor,
-        //handleErrorsInterceptor
+        //handleErrorsInterceptor ->Si el token ya se venció ver como decirle al usuario
       ])
     ), provideAnimationsAsync()
   ]

@@ -1,1 +1,38 @@
-<router-outlet />
+<!--COMPONENTE CENTRAL DE LA APP-->
+<router-outlet /> <!--Hace el match entre el enrutamiento y el componente que se va a cargar-->
+
+
+
+
+<!--BINDING DE DATOS DE ANGULAR /////////////////////////////////////////////////////////////-->
+<!--
+<div class="container">
+    <div class="row">
+        <div class="col-12 bg-secondary my-3">
+            <h1 class="text-white mb-0 py-3">
+                {{title}} -> ANGULAR ENLAZA EL VALOR DEL COMPONENTE EN LA VISTA
+            </h1>
+        </div>
+        <div class="col-12">
+            <p class="fs-2">
+                {{cant}}
+            </p>
+        </div>
+        <div class="col-12">
+            <p class="fs-2">
+                {{date | date: 'short'}}
+            </p>
+        </div>
+        <div class="col-12">
+            @for (item of operators; track $index) { -> ITERAR POR LOS OPERATORS Y CREAR UN ELEMENTO DE HTML X CADA UNO
+                <p class="fs-3"> operador numero {{$index}} name: {{item.name}} operador{{item.symbol}}</p> -> Impresos en etiqueta html
+                @if (item.name) {
+                    <button (click)="operation(item.name)" class="btn btn-secondary" type="button">
+                        {{item.symbol}}
+                    </button>
+                }
+            }
+        </div>
+    </div>
+</div>
+-->

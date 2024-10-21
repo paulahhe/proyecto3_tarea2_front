@@ -2,7 +2,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 
-export const accessTokenInterceptor: HttpInterceptorFn = (req, next) => {
+export const accessTokenInterceptor: HttpInterceptorFn = (req, next) => { //Determina si el request necesita estar logeado le da el bearer token
   const authService = inject(AuthService);
   let headers = {};
 

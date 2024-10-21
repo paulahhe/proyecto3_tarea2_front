@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ILoginResponse, IResponse, IUser } from '../interfaces';
+import { inject, Injectable } from '@angular/core';
+import { IAuthority, ICategory, ILoginResponse, IResponse, IRoleType, IUser } from '../interfaces';
 import { Observable, firstValueFrom, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -10,8 +10,10 @@ export class AuthService {
   private accessToken!: string;
   private expiresIn! : number;
   private user: IUser = {email: '', authorities: []};
+  private http: HttpClient = inject(HttpClient); //maneja la autenticación
+  //ejecuta un metodo load a ver si existe la variable del access token y si existen los mete dentro de variables
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.load();
   }
 
@@ -42,7 +44,7 @@ export class AuthService {
     return this.accessToken;
   }
 
-  public check(): boolean {
+  public check(): boolean { //PERMITE DETERMINAR SI UN USUARIO ESTÁ LOGEADO O NO
     if (!this.accessToken){
       return false;
     } else {
@@ -50,7 +52,7 @@ export class AuthService {
     }
   }
 
-  public login(credentials: {
+  public login(credentials: { //llamado post a auth/login del backend
     email: string;
     password: string;
   }): Observable<ILoginResponse> {
@@ -60,13 +62,17 @@ export class AuthService {
         this.user.email = credentials.email;
         this.expiresIn = response.expiresIn;
         this.user = response.authUser;
-        this.save();
+        this.save(); //guarda todo en el locar storage
       })
     );
   }
 
   public hasRole(role: string): boolean {
     return this.user.authorities ?  this.user?.authorities.some(authority => authority.authority == role) : false;
+  }
+
+  public isSuperAdmin(): boolean {
+    return this.user.authorities ?  this.user?.authorities.some(authority => authority.authority == IRoleType.superAdmin) : false;
   }
 
   public hasAnyRole(roles: any[]): boolean {
@@ -85,7 +91,8 @@ export class AuthService {
     return permittedRoutes;
   }
 
-  public signup(user: IUser): Observable<ILoginResponse> {
+  //metodo signup no lleva autenticacion en insomnia porque cualquier usuario se puede registrar: 
+  public signup(user: IUser): Observable<ILoginResponse> { 
     return this.http.post<ILoginResponse>('auth/signup', user);
   }
 
@@ -94,5 +101,30 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('expiresIn');
     localStorage.removeItem('auth_user');
+  }
+
+  public getUserAuthorities (): IAuthority[] | undefined {
+    return this.getUser()?.authorities ? this.getUser()?.authorities : [];
+  }
+
+  //Si un usuario puede borrar,editar,crear o ejecutar acciones:
+  public areActionsAvailable(routeAuthorities: string[]): boolean  {
+    // definición de las variables de validación
+    let allowedUser: boolean = false;
+    let isAdmin: boolean = false;
+    // se obtienen los permisos del usuario
+    let userAuthorities = this.getUserAuthorities();
+    // se valida que sea una ruta permitida para el usuario
+    for (const authority of routeAuthorities) {
+      if (userAuthorities?.some(item => item.authority == authority) ) {
+        allowedUser = userAuthorities?.some(item => item.authority == authority)
+      }
+      if (allowedUser) break;
+    }
+    // se valida que el usuario tenga un rol de administración
+    if (userAuthorities?.some(item => item.authority == IRoleType.superAdmin)) {
+      isAdmin = userAuthorities?.some(item => item.authority == IRoleType.superAdmin);
+    }          
+    return allowedUser && isAdmin;
   }
 }
