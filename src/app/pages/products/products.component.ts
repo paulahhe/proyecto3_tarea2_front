@@ -1,7 +1,7 @@
 import { ProductFormComponent } from './../../components/products/product-form/product-form.component';
 import { ProductsService } from './../../services/products.service';
 import { ProductsListComponent } from './../../components/products/product-list/product-list.component';
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { LoaderComponent } from '../../components/loader/loader.component';
@@ -10,6 +10,7 @@ import { IProduct, IRoleType } from '../../interfaces';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { CategoriesService } from '../../services/categories.service';
 
 
 @Component({
@@ -25,14 +26,16 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
 
   public productsService: ProductsService = inject(ProductsService);
   public route: ActivatedRoute = inject(ActivatedRoute);
   public areActionsAvailable: boolean = false;
-
+  public routeAuthorities: string[] = [];
   public modalService: ModalService = inject(ModalService);
   public authService: AuthService = inject(AuthService);
+  public categoryService = inject(CategoriesService);
+
   @ViewChild('addProductModal') public addProductModal: any;
   public fb: FormBuilder = inject(FormBuilder);
   productForm = this.fb.group({
@@ -43,11 +46,21 @@ export class ProductsComponent {
     inStock: ['', Validators.required],
     idCategoria: ['', Validators.required],
   })
-  public routeAuthorities: string[] =  [];
 
   constructor() {
     this.productsService.search.page = 1;
-    //this.authService.isSuperAdmin() ? this.productsService.getAll() : this.productsService.getAllByUser();
+    this.productsService.getAll();
+
+    //this.authService.isSuperAdmin();
+  }
+
+  ngOnInit(): void {
+    this.authService.getUserAuthorities();
+    this.productsService.getAll();
+    this.route.data.subscribe( data => {
+      this.routeAuthorities = data['authorities'] ? data['authorities'] : [];
+      this.areActionsAvailable = this.authService.areActionsAvailable(this.routeAuthorities);
+    });
   }
 
   saveProduct(product: IProduct) {
@@ -65,22 +78,9 @@ export class ProductsComponent {
     this.modalService.displayModal('md', this.addProductModal);
   }
   
-  updateProduct(product: IProduct) {
+  updateProduct(product: IProduct) { //OnFormEvent
     this.productsService.update(product);
     this.modalService.closeAll();
   }
-
-  ngOnInit(): void {
-    this.productsService.getAll();
-    this.route.data.subscribe(data => {
-      const authorities: string[] = data['authorities'] || [];
-      this.areActionsAvailable = this.authService.areActionsAvailable(authorities);
-    });
-  }
-
-  handleFormAction(item: IProduct) {
-    this.productsService.save(item);
-  }
-
 
 }

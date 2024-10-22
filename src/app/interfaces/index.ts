@@ -37,7 +37,7 @@ export enum IFeedbackStatus {
 
 export enum IRoleType {
   superAdmin = "ROLE_SUPER_ADMIN_ROLE",
-  user = "User"
+  user = "ROLE_USER"
 }
 
 export interface IRole {
@@ -46,13 +46,6 @@ export interface IRole {
   id: number;
   name : string;
   updatedAt: string;
-}
-
-
-export interface IOrder {
-  id?: number;
-  description?: string;
-  total?: number;
 }
 
 export interface ISearch {

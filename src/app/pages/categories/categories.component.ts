@@ -30,9 +30,10 @@ export class CategoriesComponent implements OnInit {
   public categoriesService: CategoriesService = inject(CategoriesService);
   public route: ActivatedRoute = inject(ActivatedRoute);
   public areActionsAvailable: boolean = false;
-
+  public routeAuthorities: string[] = [];
   public modalService: ModalService = inject(ModalService);
   public authService: AuthService = inject(AuthService);
+
   @ViewChild('addCategoryModal') public addCategoryModal: any;
   public fb: FormBuilder = inject(FormBuilder);
   categoryForm = this.fb.group({
@@ -41,18 +42,17 @@ export class CategoriesComponent implements OnInit {
     description: ['', Validators.required]
   })
 
-
   constructor() {
     this.categoriesService.search.page = 1;
     this.categoriesService.getAll();
   }
 
-
   ngOnInit(): void {
     this.authService.getUserAuthorities();
+    this.categoriesService.getAll();
     this.route.data.subscribe( data => {
-      this.areActionsAvailable = this.authService.areActionsAvailable(data['authorities'] ? data['authorities'] : []);
-      console.log(this.areActionsAvailable);
+      this.routeAuthorities = data['authorities'] ? data['authorities'] : [];
+      this.areActionsAvailable = this.authService.areActionsAvailable(this.routeAuthorities);
     });
   }
 
@@ -71,12 +71,6 @@ export class CategoriesComponent implements OnInit {
   updateCategory(category: ICategory) {
     this.categoriesService.update(category);
     this.modalService.closeAll();
-  }
-
-
-
-  handleFormAction(item: ICategory) {
-    this.categoriesService.save(item);
   }
 
 

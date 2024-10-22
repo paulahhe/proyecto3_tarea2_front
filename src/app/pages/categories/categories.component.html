@@ -16,7 +16,8 @@
           [categories]="categoriesService.categories$()"
           [areActionsAvailable]="areActionsAvailable" 
         />
-        <!--areActions available es un bolean que se define con la funcion ar de aluthService-->
+        <!--areActions available es un bolean que se define con la funcion areActionsAvailable de authService-->
+        <!--[] son inputs, en este caso vienen de app-category-list-->
       </div>
     </div>
   } @loading (minimum 1.5s) {

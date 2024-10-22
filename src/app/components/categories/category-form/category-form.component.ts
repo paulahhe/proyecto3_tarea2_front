@@ -14,10 +14,15 @@ import { ICategory } from '../../../interfaces';
   styleUrl: './category-form.component.scss'
 })
 export class CategoryFormComponent {
+
   public fb: FormBuilder = inject(FormBuilder);
+
+  @Input() title: string = '';
   @Input() categoryForm!: FormGroup;
+  @Input() toUpdateCategory: ICategory = {};
   @Output() callSaveMethod: EventEmitter<ICategory> = new EventEmitter<ICategory>();
   @Output() callUpdateMethod: EventEmitter<ICategory> = new EventEmitter<ICategory>();
+  @Output() callParentEvent: EventEmitter<ICategory> = new EventEmitter<ICategory>();
 
   callSave() {
     let category: ICategory = {
@@ -32,5 +37,9 @@ export class CategoryFormComponent {
     } else {
       this.callSaveMethod.emit(category);
     }
+  }
+
+  addEdit()  {
+    this.callUpdateMethod.emit(this.toUpdateCategory);
   }
 }

@@ -1,23 +1,32 @@
+import { CategorySelectionComponent } from './../../categories/category-selection/category-selection.component';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { IProduct } from '../../../interfaces';
+import { ICategory, IProduct } from '../../../interfaces';
+import { CategoriesService } from '../../../services/categories.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProductsService } from '../../../services/products.service';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
 })
 export class ProductFormComponent {
+
   public fb: FormBuilder = inject(FormBuilder);
+
   @Input() productForm!: FormGroup;
+  @Input() toUpdateProduct: IProduct = {};
   @Output() callSaveMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
   @Output() callUpdateMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
+  @Output() callParentEvent: EventEmitter<IProduct> = new EventEmitter<IProduct>();
+
 
   callSave() {
     let product: IProduct = {
@@ -31,9 +40,13 @@ export class ProductFormComponent {
       product.id = this.productForm.controls['id'].value;
     } 
     if(product.id) {
-      this.callUpdateMethod.emit(product);
+      this.callUpdateMethod.emit(product); //UPDATE  METHOD
     } else {
       this.callSaveMethod.emit(product);
     }
+  }
+  
+  addEdit()  {
+    this.callUpdateMethod.emit(this.toUpdateProduct);
   }
 }

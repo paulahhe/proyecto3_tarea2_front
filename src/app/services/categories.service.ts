@@ -3,6 +3,7 @@ import { BaseService } from './base-service';
 import {ICategory, IProduct, ISearch } from '../interfaces';
 import { AuthService } from './auth.service';
 import { AlertService } from './alert.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { AlertService } from './alert.service';
 export class CategoriesService extends BaseService<ICategory> {
   protected override source: string = 'categories'; 
   private categoryListSignal = signal<ICategory[]>([]); //Lista vacias para que nuestro codigo de componente reacciona a los cambios
-  
+  private snackBar = inject(MatSnackBar);
+
   get categories$() { //Obtener el valor de signal cada vez que cambia
     return this.categoryListSignal;
   }
@@ -43,7 +45,7 @@ export class CategoriesService extends BaseService<ICategory> {
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred adding the order','center', 'top', ['error-snackbar']);
+        this.alertService.displayAlert('error', 'An error occurred adding the category','center', 'top', ['error-snackbar']);
         console.error('error', err);
       }
     });
@@ -55,7 +57,7 @@ export class CategoriesService extends BaseService<ICategory> {
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred updating the order','center', 'top', ['error-snackbar']);
+        this.alertService.displayAlert('error', 'An error occurred updating the category','center', 'top', ['error-snackbar']);
         console.error('error', err);
       }
     });
@@ -67,7 +69,7 @@ export class CategoriesService extends BaseService<ICategory> {
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred deleting the order','center', 'top', ['error-snackbar']);
+        this.alertService.displayAlert('error', 'An error occurred deleting the category','center', 'top', ['error-snackbar']);
         console.error('error', err);
       }
     });

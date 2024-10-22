@@ -1,0 +1,14 @@
+<div class="col-6">
+
+    <select class="form-select" id="categoryType" name="categoryType" (change)="onCategoryChange($event)"
+      [class.is-invalid]="categoryInvalid" [class.is-valid]="!categoryInvalid && categoryTouched" required>
+      <option value="">Choose a category</option>
+      <option *ngFor="let ct of categories" [value]="ct.id ?? ''"
+        [selected]="category.id === ct.id">
+        {{ ct.name }}
+      </option>
+    </select>
+    <div *ngIf="categoryInvalid" class="invalid-feedback">
+        Choose a category
+    </div>
+  </div>
