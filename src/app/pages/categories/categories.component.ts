@@ -1,7 +1,7 @@
 import { CategoriesService } from './../../services/categories.service';
 import { CategoryFormComponent } from './../../components/categories/category-form/category-form.component';
 import { CategoriesListComponent } from './../../components/categories/category-list/category-list.component';
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { LoaderComponent } from '../../components/loader/loader.component';
@@ -25,7 +25,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
 
   public categoriesService: CategoriesService = inject(CategoriesService);
   public route: ActivatedRoute = inject(ActivatedRoute);
@@ -40,11 +40,20 @@ export class CategoriesComponent {
     name: ['', Validators.required],
     description: ['', Validators.required]
   })
-  public routeAuthorities: string[] =  [];
+
 
   constructor() {
     this.categoriesService.search.page = 1;
-    //this.authService.isSuperAdmin() ? this.productsService.getAll() : this.productsService.getAllByUser();
+    this.categoriesService.getAll();
+  }
+
+
+  ngOnInit(): void {
+    this.authService.getUserAuthorities();
+    this.route.data.subscribe( data => {
+      this.areActionsAvailable = this.authService.areActionsAvailable(data['authorities'] ? data['authorities'] : []);
+      console.log(this.areActionsAvailable);
+    });
   }
 
   saveCategory(category: ICategory) {
@@ -64,13 +73,7 @@ export class CategoriesComponent {
     this.modalService.closeAll();
   }
 
-  ngOnInit(): void {
-    this.categoriesService.getAll();
-    this.route.data.subscribe(data => {
-      const authorities: string[] = data['authorities'] || [];
-      this.areActionsAvailable = this.authService.areActionsAvailable(authorities);
-    });
-  }
+
 
   handleFormAction(item: ICategory) {
     this.categoriesService.save(item);
