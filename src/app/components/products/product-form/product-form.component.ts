@@ -29,12 +29,15 @@ export class ProductFormComponent {
 
 
   callSave() {
+    console.log('Save button clicked')
     let product: IProduct = {
       name: this.productForm.controls['name'].value,
       description: this.productForm.controls['description'].value,
       price: this.productForm.controls['price'].value,
       inStock: this.productForm.controls['inStock'].value,
-      idCategoria: this.productForm.controls['category'].value
+      idCategoria: { id: this.productForm.controls['category'].value } //Prueba obj
+      //idCategoria: this.productForm.controls['category'].value 
+
     }
     if(this.productForm.controls['id'].value) {
       product.id = this.productForm.controls['id'].value;
