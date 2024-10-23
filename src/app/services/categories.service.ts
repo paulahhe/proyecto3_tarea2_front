@@ -11,9 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CategoriesService extends BaseService<ICategory> {
   protected override source: string = 'categories'; 
   private categoryListSignal = signal<ICategory[]>([]); //Lista vacias para que nuestro codigo de componente reacciona a los cambios
-  private snackBar = inject(MatSnackBar);
 
-  get categories$() { //Obtener el valor de signal cada vez que cambia
+  get categories$()  { //Obtener el valor de signal cada vez que cambia
     return this.categoryListSignal;
   }
 

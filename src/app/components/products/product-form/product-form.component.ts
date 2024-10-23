@@ -27,6 +27,7 @@ export class ProductFormComponent {
   @Output() callUpdateMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
   @Output() callParentEvent: EventEmitter<IProduct> = new EventEmitter<IProduct>();
 
+  
 
   callSave() {
     console.log('Save button clicked')

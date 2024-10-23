@@ -22,7 +22,7 @@ export class ProductsService extends BaseService<IProduct> {
     size: 5
   }
   public totalItems: any = [];
-  private authService: AuthService = inject(AuthService);
+  private authService: AuthService = inject(AuthService); //Esto es para llamar al usuario
   private alertService: AlertService = inject(AlertService);
 
   getAll() {

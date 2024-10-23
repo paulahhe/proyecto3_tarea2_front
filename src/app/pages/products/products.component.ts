@@ -64,6 +64,7 @@ export class ProductsComponent implements OnInit {
   }
 
   saveProduct(product: IProduct) {
+    console.log('product', product)
     this.productsService.save(product);
     this.modalService.closeAll();
   }
