@@ -50,6 +50,7 @@ export class ProductsComponent implements OnInit {
   constructor() {
     this.productsService.search.page = 1;
     this.productsService.getAll();
+    this.categoryService.getAll();
 
     //this.authService.isSuperAdmin();
   }
@@ -57,6 +58,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getUserAuthorities();
     this.productsService.getAll();
+    this.categoryService.getAll(); //para fetch categories
     this.route.data.subscribe( data => {
       this.routeAuthorities = data['authorities'] ? data['authorities'] : [];
       this.areActionsAvailable = this.authService.areActionsAvailable(this.routeAuthorities);

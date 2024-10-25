@@ -31,11 +31,17 @@
         }
     </div>
     <div class="mb-2">
-      <label class="mb-1" for="category">Category id*</label>
+      <label for="category">Categoría</label>
+      <select id="category" formControlName="category">
+      <option *ngFor="let idCategory of categories" [ngValue]="idCategory">{{ idCategory.name }}</option>
+    </select>
+    <!--
+    <label class="mb-1" for="category">Category id*</label>
         <input min="1" id="category" formControlName="category" type="number" class="form-control">
         @if (productForm.controls['category'].invalid && (productForm.controls['category'].dirty || productForm.controls['category'].touched)) {
           <p class="text-danger my-1">Category id is required</p>
         }
+    -->
     </div>
 
     <div class="d-flex justify-content-end">

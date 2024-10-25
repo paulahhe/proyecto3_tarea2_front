@@ -1,6 +1,6 @@
 import { CategorySelectionComponent } from './../../categories/category-selection/category-selection.component';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ICategory, IProduct } from '../../../interfaces';
 import { CategoriesService } from '../../../services/categories.service';
@@ -17,17 +17,21 @@ import { ProductsService } from '../../../services/products.service';
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnInit {
 
   public fb: FormBuilder = inject(FormBuilder);
 
+  categoryService = inject(CategoriesService);
+  public categories: ICategory[] = []; // para fetch categories
+  
   @Input() productForm!: FormGroup;
-  @Input() toUpdateProduct: IProduct = {};
   @Output() callSaveMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
   @Output() callUpdateMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
   @Output() callParentEvent: EventEmitter<IProduct> = new EventEmitter<IProduct>();
 
-  
+  ngOnInit() {
+    this.categoryService.getAll(); // Call getAll to fetch categories
+  }  
 
   callSave() {
     console.log('Save button clicked')
@@ -49,8 +53,5 @@ export class ProductFormComponent {
       this.callSaveMethod.emit(product);
     }
   }
-  
-  addEdit()  {
-    this.callUpdateMethod.emit(this.toUpdateProduct);
-  }
+
 }

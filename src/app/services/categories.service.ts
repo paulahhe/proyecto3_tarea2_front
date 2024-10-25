@@ -37,6 +37,8 @@ export class CategoriesService extends BaseService<ICategory> {
     });
   }
 
+
+
   save(category: ICategory) {
     this.add({ page: this.search.page, size: this.search.size}).subscribe({
       next: (response: any) => {
