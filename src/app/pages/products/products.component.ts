@@ -29,12 +29,14 @@ import { CategoriesService } from '../../services/categories.service';
 export class ProductsComponent implements OnInit {
 
   public productsService: ProductsService = inject(ProductsService);
+  public categoriesService = inject(CategoriesService);
+
   public route: ActivatedRoute = inject(ActivatedRoute);
   public areActionsAvailable: boolean = false;
   public routeAuthorities: string[] = [];
   public modalService: ModalService = inject(ModalService);
   public authService: AuthService = inject(AuthService);
-  public categoryService = inject(CategoriesService);
+  
 
   @ViewChild('addProductModal') public addProductModal: any;
   public fb: FormBuilder = inject(FormBuilder);
@@ -44,21 +46,21 @@ export class ProductsComponent implements OnInit {
     description: ['', Validators.required],
     price: ['', Validators.required],
     inStock: ['', Validators.required],
-    idCategoria: ['', Validators.required],
+    category: ['', Validators.required],
   })
 
   constructor() {
     this.productsService.search.page = 1;
+    this.categoriesService.search.page = 1;
     this.productsService.getAll();
-    this.categoryService.getAll();
-
+    this.categoriesService.getAll();
     //this.authService.isSuperAdmin();
   }
 
   ngOnInit(): void {
     this.authService.getUserAuthorities();
     this.productsService.getAll();
-    this.categoryService.getAll(); //para fetch categories
+    this.categoriesService.getAll(); //para fetch categories
     this.route.data.subscribe( data => {
       this.routeAuthorities = data['authorities'] ? data['authorities'] : [];
       this.areActionsAvailable = this.authService.areActionsAvailable(this.routeAuthorities);
@@ -77,7 +79,7 @@ export class ProductsComponent implements OnInit {
     this.productForm.controls['description'].setValue(product.description ? product.description : '');
     this.productForm.controls['price'].setValue(product.price ? JSON.stringify(product.price) : '');
     this.productForm.controls['inStock'].setValue(product.inStock ? JSON.stringify(product.inStock) : '');
-    this.productForm.controls['idCategoria'].setValue(product.idCategoria ? JSON.stringify(product.idCategoria) : '');
+    this.productForm.controls['category'].setValue(product.category ? JSON.stringify(product.category) : '');
     this.modalService.displayModal('md', this.addProductModal);
   }
   

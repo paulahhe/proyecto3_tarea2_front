@@ -3,7 +3,6 @@ import { BaseService } from './base-service';
 import {IProduct, ISearch } from '../interfaces';
 import { AuthService } from './auth.service';
 import { AlertService } from './alert.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ProductsService extends BaseService<IProduct> {
   protected override source: string = 'products'; //Viene de mi clase products del backend
   private productListSignal = signal<IProduct[]>([]); //Lista vacias para que nuestro codigo de componente reacciona a los cambios
-  private snackBar = inject(MatSnackBar);
 
   get products$() { //Obtener el valor de signal cada vez que cambia
     return this.productListSignal;
@@ -19,7 +17,7 @@ export class ProductsService extends BaseService<IProduct> {
 
   public search: ISearch = { 
     page: 1,
-    size: 5
+    size: 10
   }
   public totalItems: any = [];
   private authService: AuthService = inject(AuthService); //Esto es para llamar al usuario
@@ -39,7 +37,7 @@ export class ProductsService extends BaseService<IProduct> {
   }
 
   save(product: IProduct) {
-    this.add({ page: this.search.page, size: this.search.size}).subscribe({
+    this.add(product).subscribe({
       next: (response: any) => {
         this.productListSignal.update((products: IProduct[]) => [response, ...products]);
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
@@ -54,6 +52,7 @@ export class ProductsService extends BaseService<IProduct> {
   update(product: IProduct) {
     this.editCustomSource(`${product.id}`, product).subscribe({
       next: (response: any) => {
+        this.productListSignal.update((products: IProduct[]) => [response, ...products]);
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
       },
       error: (err: any) => {

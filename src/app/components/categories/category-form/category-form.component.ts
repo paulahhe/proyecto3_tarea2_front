@@ -24,6 +24,7 @@ export class CategoryFormComponent {
   //@Output() callParentEvent: EventEmitter<ICategory> = new EventEmitter<ICategory>();
 
   callSave() {
+    console.log('Save button clicked')
     let category: ICategory = {
       name: this.categoryForm.controls['name'].value,
       description: this.categoryForm.controls['description'].value
@@ -37,6 +38,4 @@ export class CategoryFormComponent {
       this.callSaveMethod.emit(category);
     }
   }
-
-
 }

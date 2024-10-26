@@ -15,7 +15,7 @@ export class UserService extends BaseService<IUser> { //Hereda los metodos de Ba
   } //la señal depende de la estructura del back end.
   public search: ISearch = { 
     page: 1,
-    size: 5
+    size: 10
   }
   public totalItems: any = [];
   private alertService: AlertService = inject(AlertService);

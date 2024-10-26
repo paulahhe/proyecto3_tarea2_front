@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, injec
 import { CommonModule } from '@angular/common';
 import { ModalComponent } from '../../modal/modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { IProduct } from '../../../interfaces';
+import { ICategory, IProduct } from '../../../interfaces';
 
 @Component({
   selector: 'app-product-list',
@@ -22,10 +22,12 @@ export class ProductsListComponent implements OnChanges {
   @Input() title: string  = '';
   @Input() products: IProduct[] = [];
   @Input() areActionsAvailable: boolean = true;
+  @Output() categories : ICategory[] = []; //ADDED
   @Output() callModalAction: EventEmitter<IProduct> = new EventEmitter<IProduct>();
   @Output() callDeleteAction: EventEmitter<IProduct> = new EventEmitter<IProduct>();
   public selectedItem: IProduct = {}
   public productService= inject(ProductsService);
+  public categoryService = inject(CategoriesService);
   public modalService= inject(NgbModal);
 
   ngOnChanges(changes: SimpleChanges): void {

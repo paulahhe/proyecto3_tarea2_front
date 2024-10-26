@@ -28,6 +28,7 @@ import { ActivatedRoute } from '@angular/router';
 export class CategoriesComponent implements OnInit {
 
   public categoriesService: CategoriesService = inject(CategoriesService);
+  
   public route: ActivatedRoute = inject(ActivatedRoute);
   public areActionsAvailable: boolean = false;
   public routeAuthorities: string[] = [];
@@ -57,6 +58,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   saveCategory(category: ICategory) {
+    console.log('saveCategory() test:', category)
     this.categoriesService.save(category);
     this.modalService.closeAll();
   }

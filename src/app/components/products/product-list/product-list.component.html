@@ -19,7 +19,7 @@
         <td>{{item.description}}</td>
         <td>{{item.price}}</td>
         <td>{{item.inStock}}</td>
-        <td>{{item.idCategoria?.name}}</td> <!--Deberia ser sin el signo ? pero solo no marca error si se lo dejo-->
+        <td>{{item.category?.name}}</td>
         <td>
           @if (areActionsAvailable) {
             <button (click)="callModalAction.emit(item);" class="btn btn-warning me-2" type="button"><i class="fas fa-pen"></i></button>

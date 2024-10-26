@@ -33,7 +33,7 @@
     <div class="mb-2">
       <label for="category">Categoría</label>
       <select id="category" formControlName="category">
-      <option *ngFor="let idCategory of categories" [ngValue]="idCategory">{{ idCategory.name }}</option>
+      <option *ngFor="let category of categories" [ngValue]="category">{{ category.name }}</option>
     </select>
     <!--
     <label class="mb-1" for="category">Category id*</label>

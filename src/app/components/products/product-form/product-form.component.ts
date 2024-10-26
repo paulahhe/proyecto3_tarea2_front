@@ -1,3 +1,4 @@
+import { CategoriesComponent } from './../../../pages/categories/categories.component';
 import { CategorySelectionComponent } from './../../categories/category-selection/category-selection.component';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
@@ -22,16 +23,15 @@ export class ProductFormComponent implements OnInit {
   public fb: FormBuilder = inject(FormBuilder);
 
   categoryService = inject(CategoriesService);
-  public categories: ICategory[] = []; // para fetch categories
   
   @Input() productForm!: FormGroup;
+  @Input() categories: ICategory[]=[];
   @Output() callSaveMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
   @Output() callUpdateMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
-  @Output() callParentEvent: EventEmitter<IProduct> = new EventEmitter<IProduct>();
+  //@Output() callParentEvent: EventEmitter<IProduct> = new EventEmitter<IProduct>();
 
   ngOnInit() {
-    this.categoryService.getAll(); // Call getAll to fetch categories
-  }  
+  }
 
   callSave() {
     console.log('Save button clicked')
@@ -40,8 +40,8 @@ export class ProductFormComponent implements OnInit {
       description: this.productForm.controls['description'].value,
       price: this.productForm.controls['price'].value,
       inStock: this.productForm.controls['inStock'].value,
-      idCategoria: { id: this.productForm.controls['category'].value } //Prueba obj
-      //idCategoria: this.productForm.controls['category'].value 
+      category: this.productForm.controls['category'].value
+      //idCategoria: { id: this.productForm.controls['category'].value } //Prueba obj
 
     }
     if(this.productForm.controls['id'].value) {

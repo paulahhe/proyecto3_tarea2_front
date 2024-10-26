@@ -63,7 +63,7 @@ export interface IProduct {
   description?: string;
   price?: number;
   inStock?: number;
-  idCategoria?: ICategory
+  category?: ICategory
 }
 
 export interface ICategory {

@@ -16,6 +16,7 @@
           [products]="productsService.products$()"
           [areActionsAvailable]="areActionsAvailable" 
         />
+        <!--          [categories]="categoriesService.categories$()"-->
       </div>
     </div>
   } @loading (minimum 1.5s) {
@@ -30,6 +31,7 @@
         <app-product-form
           [productForm]="productForm"
           (callSaveMethod)="saveProduct($event)"
+          [categories]="categoriesService.categories$()"
           (callUpdateMethod)="updateProduct($event)"
         />
       </div>
