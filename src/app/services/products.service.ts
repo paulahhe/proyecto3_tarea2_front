@@ -52,7 +52,7 @@ export class ProductsService extends BaseService<IProduct> {
   update(product: IProduct) {
     this.editCustomSource(`${product.id}`, product).subscribe({
       next: (response: any) => {
-        this.productListSignal.update((products: IProduct[]) => [response, ...products]);
+        //this.productListSignal.update((products: IProduct[]) => [response, ...products]);
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
       },
       error: (err: any) => {

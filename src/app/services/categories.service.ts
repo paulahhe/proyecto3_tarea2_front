@@ -52,7 +52,7 @@ export class CategoriesService extends BaseService<ICategory> {
   update(category: ICategory) {
     this.editCustomSource(`${category.id}`, category).subscribe({
       next: (response: any) => {
-        this.categoryListSignal.update((categories: ICategory[]) => [response, ...categories]);
+        //this.categoryListSignal.update((categories: ICategory[]) => [response, ...categories]);
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
       },
       error: (err: any) => {
